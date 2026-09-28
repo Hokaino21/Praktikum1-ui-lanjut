@@ -9,38 +9,38 @@ const routes = [
       {
         path: '',
         name: 'home',
-        component: () => import('@/views/Home.vue'),
+        component: () => import('@/view/Home.vue'),
         meta: { breadcrumb: 'Home' },
       },
       {
         path: 'about',
         name: 'about',
-        component: () => import('@/views/About.vue'),
+        component: () => import('@/view/About.vue'),
         meta: { breadcrumb: 'About' },
       },
       {
         path: 'browse',
         name: 'browse',
-        component: () => import('@/views/Browse.vue'),
+        component: () => import('@/view/Browse.vue'),
         meta: { breadcrumb: 'Browse' },
         redirect: '/browse/events',
         children: [
           {
             path: 'events',
             name: 'events',
-            component: () => import('@/views/EventList.vue'),
+            component: () => import('@/view/EventList.vue'),
             meta: { breadcrumb: 'Event List' },
           },
           {
             path: 'events/:id',
             name: 'event-detail',
-            component: () => import('@/views/EventDetail.vue'),
+            component: () => import('@/view/EventDetail.vue'),
             meta: { breadcrumb: 'Event Detail' },
           },
           {
             path: 'category',
             name: 'category',
-            component: () => import('@/views/Category.vue'),
+            component: () => import('@/view/Category.vue'),
             meta: { breadcrumb: 'Category' },
           },
         ],
@@ -48,7 +48,7 @@ const routes = [
       {
         path: 'contact',
         name: 'contact',
-        component: () => import('@/views/Contact.vue'),
+        component: () => import('@/view/Contact.vue'),
         meta: { breadcrumb: 'Contact' },
       },
     ],
