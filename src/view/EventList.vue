@@ -1,132 +1,142 @@
+<script setup>
+const events = [
+  {
+    id: 1,
+    title: 'Vue.js Mastery Workshop',
+    date: 'Oct 12, 2026',
+    loc: 'Tech Hub, Jakarta',
+    cat: 'Workshop',
+    desc: 'Learn advanced Vue 3 concepts, Composition API, and state management to build high-performance web applications interactively.'
+  },
+  {
+    id: 2,
+    title: 'National Tech Meetup',
+    date: 'Oct 15, 2026',
+    loc: 'Main Auditorium, City Center',
+    cat: 'Meetup',
+    desc: 'A gathering of hundreds of developers and tech enthusiasts to share the latest industry trends and expand professional networks.'
+  },
+  {
+    id: 3,
+    title: 'Startup Pitch Competition',
+    date: 'Nov 02, 2026',
+    loc: 'Innovation Center',
+    cat: 'Competition',
+    desc: 'Watch the best local startup founders pitch their innovative ideas live in front of a panel of renowned investors.'
+  },
+  {
+    id: 4,
+    title: 'UI/UX Design Sprint',
+    date: 'Nov 18, 2026',
+    loc: 'Creative Studio',
+    cat: 'Workshop',
+    desc: 'A hands-on session on designing user interfaces by implementing layout systems and visual hierarchy principles.'
+  },
+  {
+    id: 5,
+    title: 'Digital Marketing Seminar',
+    date: 'Nov 20, 2026',
+    loc: 'Grand Hotel Hall',
+    cat: 'Seminar',
+    desc: 'An in-depth seminar dissecting modern digital marketing strategies, from SEO optimization to user conversion tactics.'
+  },
+  {
+    id: 6,
+    title: 'Community Leaders Summit',
+    date: 'Dec 05, 2026',
+    loc: 'Gatherly HQ',
+    cat: 'Conference',
+    desc: 'An exclusive year-end conference for community leaders to formulate sustainable ecosystem development strategies.'
+  }
+]
+</script>
+
 <template>
   <div class="event-list-page">
     <div class="header-section">
-      <h2>Upcoming Events</h2>
-
-      <p>
-        Discover the latest gatherings and activities
-        happening near you.
-      </p>
+      <h2 class="section-title">Upcoming Events</h2>
+      <p class="section-desc">Discover workshops, seminars, tech meetups, and competitions near you.</p>
     </div>
 
     <div class="event-grid">
-      <div
-        class="event-card"
-        v-for="i in 6"
-        :key="i"
-      >
-        <div class="event-date">
-          Oct {{ 10 + i }}, 2026
+      <div class="event-card" v-for="event in events" :key="event.id">
+        <div class="event-body">
+          <div class="event-meta">
+            <span class="event-date">{{ event.date }}</span>
+            <span class="event-category">{{ event.cat }}</span>
+          </div>
+
+          <h3 class="event-title">{{ event.title }}</h3>
+          <p class="event-loc">{{ event.loc }}</p>
+          <p class="event-desc">{{ event.desc }}</p>
+
+          <div class="card-footer">
+            <router-link :to="`/browse/events/${event.id}`" class="btn-link">View Event Details &rarr;</router-link>
+          </div>
         </div>
-
-        <span class="event-category">
-          Community
-        </span>
-
-        <h3>
-          Community Gathering {{ i }}
-        </h3>
-
-        <p>
-          Main Auditorium, City Center
-        </p>
-
-        <p class="event-desc">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Aliquam at velit vel magna interdum scelerisque.
-        </p>
-
-        <router-link
-          :to="`/browse/events/${i}`"
-          class="btn-link"
-        >
-          View Details →
-        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.event-list-page {
-  animation: fadeIn 0.4s ease;
-}
-
-.header-section {
-  margin-bottom: 2rem;
-}
-
-.header-section h2 {
-  font-size: 1.8rem;
-  color: #1c1948;
-}
-
-.header-section p {
-  color: #666;
-}
+.header-section { margin-bottom: var(--space-8); }
+.section-title { font-size: 2.2rem; margin-bottom: var(--space-2); }
+.section-desc { color: var(--text-muted); font-size: 1.1rem; }
 
 .event-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(280px, 1fr)
-  );
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-6);
 }
 
 .event-card {
-  padding: 1.5rem;
   background: white;
-  border: 1px solid #eee;
-  border-radius: 16px;
-  transition: all 0.3s ease;
+  border-radius: var(--space-4);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .event-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.06);
+}
+
+.event-body { padding: var(--space-6); display: flex; flex-direction: column; height: 100%; }
+
+.event-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
 }
 
 .event-date {
-  color: #6644ff;
-  font-weight: 700;
-  margin-bottom: 0.8rem;
-}
-
-.event-category {
-  display: inline-block;
-  padding: 0.3rem 0.7rem;
   background: rgba(102, 68, 255, 0.1);
-  color: #6644ff;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  color: var(--primary);
+  padding: var(--space-1) var(--space-2);
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
 }
 
-.event-card h3 {
-  color: #1c1948;
-}
+.event-category { color: var(--text-muted); font-size: 0.85rem; font-weight: 500; text-transform: uppercase; }
+.event-title { margin-bottom: var(--space-2); font-size: 1.4rem; }
+.event-loc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: var(--space-4); }
+.event-desc { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; margin-bottom: var(--space-6); flex-grow: 1; }
 
-.event-card p {
-  color: #666;
-}
-
-.event-desc {
-  line-height: 1.6;
+.card-footer {
+  border-top: 1px solid var(--border-color);
+  padding-top: var(--space-4);
 }
 
 .btn-link {
-  color: #6644ff;
-  text-decoration: none;
+  color: var(--text-main);
   font-weight: 600;
+  text-decoration: none;
 }
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
+.btn-link:hover { color: var(--primary); }
 </style>
