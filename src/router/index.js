@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AppLayout from '@/layouts/App.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 
 const routes = [
   {
@@ -50,6 +51,17 @@ const routes = [
         name: 'contact',
         component: () => import('@/view/Contact.vue'),
         meta: { breadcrumb: 'Contact' },
+      },
+    ],
+  },
+  {
+    path: '/dashboard',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'dashboard',
+        component: () => import('@/view/Dashboard.vue'),
       },
     ],
   },
