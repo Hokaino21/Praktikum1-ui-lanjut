@@ -62,6 +62,13 @@ const routes = [
         path: '',
         name: 'dashboard',
         component: () => import('@/view/Dashboard.vue'),
+        meta: { breadcrumb: 'Dashboard' },
+      },
+      {
+        path: 'events',
+        name: 'event-management',
+        component: () => import('@/view/EventManagement.vue'),
+        meta: { breadcrumb: 'Event Management' },
       },
     ],
   },

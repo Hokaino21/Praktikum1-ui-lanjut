@@ -1,5 +1,5 @@
 <script setup>
-import { RouterView, RouterLink } from 'vue-router'
+import { RouterView, RouterLink } from 'vue-router';
 </script>
 
 <template>
@@ -9,10 +9,8 @@ import { RouterView, RouterLink } from 'vue-router'
         <router-link to="/">Gatherly Organizer</router-link>
       </div>
       <nav class="rail-nav">
-        <router-link to="/dashboard" class="rail-link active">Overview</router-link>
-        <a href="#" class="rail-link">My Events</a>
-        <a href="#" class="rail-link">Attendees</a>
-        <a href="#" class="rail-link">QR Check-in</a>
+        <router-link to="/dashboard" class="rail-link" exact-active-class="active">Dashboard</router-link>
+        <router-link to="/dashboard/events" class="rail-link" active-class="active">Event Management</router-link>
       </nav>
       <div class="rail-footer">
         <router-link to="/" class="rail-link">&larr; Back to Public</router-link>
@@ -36,9 +34,8 @@ import { RouterView, RouterLink } from 'vue-router'
   display: flex;
   height: 100vh;
   overflow: hidden;
-  background-color: var(--bg-gray);
+  background-color: var(--bg-gray, #f8f9fa);
 }
-
 .dashboard-rail {
   width: 260px;
   background-color: #1c1948;
@@ -46,24 +43,21 @@ import { RouterView, RouterLink } from 'vue-router'
   display: flex;
   flex-direction: column;
 }
-
 .rail-brand {
-  padding: var(--space-6);
+  padding: var(--space-6, 24px);
   font-size: 1.2rem;
   font-weight: 700;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .rail-brand a { color: white; text-decoration: none; }
-
 .rail-nav {
   flex: 1;
-  padding: var(--space-6) 0;
+  padding: var(--space-6, 24px) 0;
   display: flex;
   flex-direction: column;
 }
-
 .rail-link {
-  padding: var(--space-3) var(--space-6);
+  padding: var(--space-3, 12px) var(--space-6, 24px);
   color: #a0a0b0;
   text-decoration: none;
   font-weight: 500;
@@ -72,32 +66,23 @@ import { RouterView, RouterLink } from 'vue-router'
 .rail-link:hover, .rail-link.active {
   background-color: rgba(255,255,255,0.05);
   color: white;
-  border-left: 4px solid var(--primary);
+  border-left: 4px solid var(--primary, #6644ff);
 }
-
-.rail-footer {
-  padding: var(--space-6);
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-
+.rail-footer { padding: var(--space-6, 24px); border-top: 1px solid rgba(255,255,255,0.1); }
 .dashboard-pane {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
 }
-
 .pane-header {
   background: white;
-  padding: var(--space-4) var(--space-8);
+  padding: var(--space-4, 16px) var(--space-8, 32px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
 }
 .pane-header h1 { font-size: 1.5rem; margin: 0; }
-
-.pane-content {
-  padding: var(--space-8);
-}
+.pane-content { padding: var(--space-8, 32px); }
 </style>
