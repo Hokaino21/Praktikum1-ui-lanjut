@@ -39,10 +39,28 @@ const routes = [
             meta: { breadcrumb: 'Event Detail' },
           },
           {
+            path: 'events/:id/register',
+            name: 'event-registration',
+            component: () => import('@/view/EventRegistration.vue'),
+            meta: { breadcrumb: 'Registration' },
+          },
+          {
             path: 'category',
             name: 'category',
             component: () => import('@/view/Category.vue'),
             meta: { breadcrumb: 'Category' },
+          },
+          {
+            path: 'your-events',
+            name: 'your-events',
+            component: () => import('@/view/YourEvents.vue'),
+            meta: { breadcrumb: 'Your Events' },
+          },
+          {
+            path: 'your-events/:id',
+            name: 'ticket-receipt',
+            component: () => import('@/view/TicketReceipt.vue'),
+            meta: { breadcrumb: 'Ticket Receipt' },
           },
         ],
       },
@@ -72,64 +90,19 @@ const routes = [
       },
     ],
   },
-]
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-})
-
-export default router
-import { createRouter, createWebHistory } from 'vue-router'
-import AppLayout from '@/layouts/App.vue'
-import DashboardLayout from '@/layouts/DashboardLayout.vue'
-
-const routes = [
   {
-    path: '/',
-    component: AppLayout,
-    children: [
-      { path: '', name: 'home', component: () => import('@/views/Home.vue') },
-      { path: 'about', name: 'about', component: () => import('@/views/About.vue') },
-      {
-        path: 'browse',
-        name: 'browse',
-        component: () => import('@/views/Browse.vue'),
-        redirect: '/browse/events',
-        children: [
-          { path: 'events', name: 'events', component: () => import('@/views/EventList.vue') },
-          { path: 'events/:id', name: 'event-detail', component: () => import('@/views/EventDetail.vue') },
-          // RUTE BARU: Form Pendaftaran
-          { path: 'events/:id/register', name: 'event-registration', component: () => import('@/views/EventRegistration.vue') },
-          { path: 'category', name: 'category', component: () => import('@/views/Category.vue') },
-          // RUTE BARU: Dompet Tiket
-          { path: 'your-events', name: 'your-events', component: () => import('@/views/YourEvents.vue') },
-          // RUTE BARU: Detail Tanda Terima Tiket
-          { path: 'your-events/:id', name: 'ticket-receipt', component: () => import('@/views/TicketReceipt.vue') }
-        ]
-      },
-      { path: 'contact', name: 'contact', component: () => import('@/views/Contact.vue') },
-      {
-        path: '/dashboard',
-        component: DashboardLayout,
-        children: [
-          { path: '', name: 'dashboard-overview', component: () => import('@/views/Dashboard.vue') },
-          { path: 'events', name: 'dashboard-events', component: () => import('@/views/EventManagement.vue') }
-        ]
-      },
-      { path: '/:pathMatch(.*)*', redirect: '/' }
-    ]
-  }
+    path: '/:pathMatch(.*)*',
+    redirect: '/',
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  // Memastikan layar selalu scroll ke atas saat pindah halaman
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition;
-    return { top: 0 };
-  }
+    if (savedPosition) return savedPosition
+    return { top: 0 }
+  },
 })
 
 export default router
