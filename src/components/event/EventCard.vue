@@ -111,3 +111,58 @@ defineEmits(['view-detail']);
   color: var(--primary);
 }
 </style>
+<template>
+  <AppCard class="event-card-wrapper">
+    <div class="event-body">
+      <div class="event-meta">
+        <div class="meta-left">
+          <span class="event-date">{{ event.date }}</span>
+          <!-- BADGE BARU -->
+          <span v-if="isRegistered" class="badge-registered">Registered</span>
+        </div>
+        <span class="event-category">{{ event.cat }}</span>
+      </div>
+
+      <h3 class="event-title">{{ event.title }}</h3>
+      <p class="event-loc">{{ event.loc }}</p>
+      <p class="event-desc">{{ event.desc }}</p>
+
+      <div class="card-footer">
+        <button class="btn-link" @click="emit('view-detail', event.id)">
+          View Event Details &rarr;
+        </button>
+      </div>
+    </div>
+  </AppCard>
+</template>
+
+<script setup>
+import AppCard from '@/components/ui/AppCard.vue';
+
+defineProps({
+  event: { type: Object, required: true },
+  isRegistered: { type: Boolean, default: false } // PROPERTI BARU
+});
+defineEmits(['view-detail']);
+</script>
+
+<style scoped>
+/* (Biarkan CSS lama kamu, tambahkan ini di bawahnya) */
+.badge-registered {
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+/* Pastikan .meta-left memiliki display flex & gap */
+.meta-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+</style>

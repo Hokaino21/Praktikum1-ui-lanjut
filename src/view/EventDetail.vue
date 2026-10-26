@@ -110,3 +110,28 @@ const event = computed(() => getEventById(route.params.id));
 .not-found-card p { color: var(--text-muted, #718096); margin-bottom: var(--space-6, 24px); }
 @media (max-width: 900px) { .grid-asymmetric { grid-template-columns: 1fr; } }
 </style>
+<!-- Ganti bagian action-buttons menjadi ini -->
+<div class="action-buttons">
+  <!-- STATUS 1: SUDAH SELESAI -->
+  <button v-if="event.done" disabled class="btn-register btn-disabled">
+    Registration Closed
+  </button>
+
+  <!-- STATUS 2: SUDAH TERDAFTAR -->
+  <div v-else-if="isRegistered" class="registered-action-group">
+    <button disabled class="btn-register btn-registered">Already Registered</button>
+    <router-link :to="'/browse/your-events/' + event.id" class="view-receipt-link">
+      View Your Ticket Receipt &rarr;
+    </router-link>
+  </div>
+
+  <!-- STATUS 3: KUOTA HABIS -->
+  <button v-else-if="event.quota <= 0" disabled class="btn-register btn-disabled">
+    Sold Out
+  </button>
+
+  <!-- STATUS 4: TERSEDIA -->
+  <button v-else class="btn-register" @click="router.push(`/browse/events/${event.id}/register`)">
+    Register Now
+  </button>
+</div>

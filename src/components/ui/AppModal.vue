@@ -72,3 +72,50 @@ const emit = defineEmits(['confirm', 'close']);
 .modal-fade-enter-active, .modal-fade-leave-active { transition: opacity 0.25s ease; }
 .modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
 </style>
+<template>
+  <Transition name="modal-fade">
+    <div v-if="isOpen" class="modal-overlay" @click.self="$emit('close')">
+      <div class="modal-card">
+        <div class="modal-header">
+          <span v-if="badgeText" :class="['modal-badge', `badge-${badgeVariant || variant}`]">
+            {{ badgeText }}
+          </span>
+          <h3 class="modal-title">{{ title }}</h3>
+        </div>
+
+        <div class="modal-body">
+          <p v-if="message" class="modal-message">{{ message }}</p>
+          <slot /> <!-- Slot Utama -->
+        </div>
+
+        <div class="modal-footer">
+          <!-- SLOT FOOTER BARU -->
+          <slot name="footer">
+            <button v-if="showCancel" class="btn-cancel" @click="$emit('close')">
+              {{ cancelText }}
+            </button>
+            <button :class="['btn-confirm', `btn-${variant}`]" @click="$emit('confirm')">
+              {{ confirmText }}
+            </button>
+          </slot>
+        </div>
+      </div>
+    </div>
+  </Transition>
+</template>
+
+<script setup>
+defineProps({
+  isOpen: { type: Boolean, default: false },
+  title: { type: String, default: 'Action Confirmation' },
+  message: { type: String, default: '' },
+  confirmText: { type: String, default: 'Yes, Proceed' },
+  cancelText: { type: String, default: 'Cancel' },
+  showCancel: { type: Boolean, default: true },
+  variant: { type: String, default: 'danger' },
+  badgeText: { type: String, default: '' },
+  badgeVariant: { type: String, default: '' }
+});
+defineEmits(['confirm', 'close']);
+</script>
+<!-- CSS AppModal biarkan saja seperti sebelumnya -->

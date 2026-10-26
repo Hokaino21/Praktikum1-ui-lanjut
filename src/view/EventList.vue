@@ -80,3 +80,25 @@ const handleViewDetail = (id) => {
 .empty-state p { color: var(--text-muted, #718096); line-height: 1.6; margin-bottom: var(--space-6, 24px); font-size: 1rem; }
 .empty-action { display: flex; justify-content: center; }
 </style>
+<!-- Di dalam template -->
+<EventCard
+  v-for="event in filteredEvents"
+  :key="event.id"
+  :event="event"
+  :is-registered="isUserRegistered(event.id)"
+  @view-detail="handleViewDetail"
+/>
+
+<!-- Di dalam script setup -->
+<script setup>
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useEvents } from '@/composables/useEvents'; // TAMBAHKAN
+import EventCard from '@/components/event/EventCard.vue';
+
+const router = useRouter();
+const { activeEvents, isUserRegistered } = useEvents(); // AMBIL FUNGSI
+
+const searchQuery = ref('');
+// ... sisa kode filter dan handleViewDetail kamu
+</script>
