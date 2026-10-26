@@ -7,9 +7,10 @@ import AppCard from '@/components/ui/AppCard.vue';
 
 const route = useRoute();
 const router = useRouter();
-const { getEventById } = useEvents();
+const { getEventById, isUserRegistered } = useEvents();
 
 const event = computed(() => getEventById(route.params.id));
+const isRegistered = computed(() => isUserRegistered(route.params.id));
 </script>
 
 <template>
@@ -48,23 +49,30 @@ const event = computed(() => getEventById(route.params.id));
               {{ event.done ? 'Registration is closed as this event has ended.' : 'Secure your ticket now before quota is filled.' }}
             </p>
 
-            <!-- LOGIKA TOMBOL DIPERBAIKI: Jika !event.done baru muncul tombol register -->
-            <AppButton 
-              v-if="!event.done" 
-              variant="primary" 
-              class="btn-register" 
-              @click="alert('Ticket registered successfully! Your digital QR ticket has been sent to your email.')"
-            >
-              Register Now
-            </AppButton>
-            <AppButton 
-              v-else 
-              variant="secondary" 
-              class="btn-register btn-disabled" 
-              disabled
-            >
-              Registration Closed
-            </AppButton>
+            <div class="action-buttons">
+              <!-- STATUS 1: SUDAH SELESAI -->
+              <button v-if="event.done" disabled class="btn-register btn-disabled">
+                Registration Closed
+              </button>
+
+              <!-- STATUS 2: SUDAH TERDAFTAR -->
+              <div v-else-if="isRegistered" class="registered-action-group">
+                <button disabled class="btn-register btn-registered">Already Registered</button>
+                <router-link :to="'/browse/your-events/' + event.id" class="view-receipt-link">
+                  View Your Ticket Receipt &rarr;
+                </router-link>
+              </div>
+
+              <!-- STATUS 3: KUOTA HABIS -->
+              <button v-else-if="event.quota <= 0" disabled class="btn-register btn-disabled">
+                Sold Out
+              </button>
+
+              <!-- STATUS 4: TERSEDIA -->
+              <button v-else class="btn-register" @click="router.push(`/browse/events/${event.id}/register`)">
+                Register Now
+              </button>
+            </div>
 
             <p v-if="!event.done" class="spots">Only {{ event.quota }} seats available!</p>
           </AppCard>
@@ -102,8 +110,13 @@ const event = computed(() => getEventById(route.params.id));
 .ticket-card h3 { font-size: 1.2rem; margin-bottom: var(--space-2, 8px); }
 .price { font-size: 2rem; font-weight: 800; color: var(--primary, #6644ff); margin-bottom: var(--space-2, 8px); }
 .ticket-desc { font-size: 0.9rem; color: var(--text-muted, #718096); margin-bottom: var(--space-6, 24px); }
-.btn-register { width: 100%; margin-bottom: var(--space-3, 12px); }
+.btn-register { width: 100%; margin-bottom: var(--space-3, 12px); background: var(--primary, #6644ff); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: background-color 0.2s; }
+.btn-register:hover { background: #5533dd; }
 .btn-disabled { cursor: not-allowed; opacity: 0.6; }
+.btn-registered { background: #dbeafe; color: #1d4ed8; cursor: default; }
+.registered-action-group { display: flex; flex-direction: column; gap: var(--space-2, 8px); }
+.view-receipt-link { display: block; text-align: center; font-size: 0.9rem; font-weight: 600; color: var(--primary, #6644ff); text-decoration: none; }
+.view-receipt-link:hover { text-decoration: underline; }
 .spots { color: #27ae60; font-weight: 600; font-size: 0.95rem; text-align: center; }
 .not-found-card { text-align: center; padding: var(--space-12, 48px); background: white; border-radius: var(--space-4, 16px); border: 1px solid var(--border-color, #e2e8f0); }
 .not-found-card h2 { margin-bottom: var(--space-2, 8px); }

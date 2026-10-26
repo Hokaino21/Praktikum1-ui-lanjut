@@ -8,7 +8,7 @@ import CategoryFilter from '@/components/event/CategoryFilter.vue';
 import AppButton from '@/components/ui/AppButton.vue';
 
 const router = useRouter();
-const { activeEvents } = useEvents();
+const { activeEvents, isUserRegistered } = useEvents();
 
 const searchQuery = ref('');
 const selectedCategory = ref('All');
@@ -47,6 +47,7 @@ const handleViewDetail = (id) => {
         v-for="event in filteredEvents" 
         :key="event.id" 
         :event="event" 
+        :is-registered="isUserRegistered(event.id)" 
         @view-detail="handleViewDetail" 
       />
     </div>

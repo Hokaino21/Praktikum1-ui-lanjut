@@ -469,3 +469,14 @@ onUnmounted(() => {
   }
 }
 </style>
+const menus = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Browse', path: '/browse', children: [
+      { name: 'Event List', path: '/browse/events' },
+      { name: 'Category', path: '/browse/category' },
+      { name: 'Your Events', path: '/browse/your-events' } // TAMBAHKAN INI
+  ]},
+  { name: 'Contact', path: '/contact' },
+  { name: 'Organizer Dashboard', path: '/dashboard' }
+];

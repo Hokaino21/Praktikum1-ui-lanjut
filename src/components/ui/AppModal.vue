@@ -1,30 +1,43 @@
 <script setup>
-const props = defineProps({
+defineProps({
   isOpen: { type: Boolean, default: false },
   title: { type: String, default: 'Action Confirmation' },
-  message: { type: String, default: 'Are you sure you want to proceed with this action?' },
+  message: { type: String, default: '' },
   confirmText: { type: String, default: 'Yes, Proceed' },
-  cancelText: { type: String, default: 'Cancel' }
+  cancelText: { type: String, default: 'Cancel' },
+  showCancel: { type: Boolean, default: true },
+  variant: { type: String, default: 'danger' },
+  badgeText: { type: String, default: '' },
+  badgeVariant: { type: String, default: '' }
 });
-
-const emit = defineEmits(['confirm', 'close']);
+defineEmits(['confirm', 'close']);
 </script>
 
 <template>
   <Transition name="modal-fade">
-    <div v-if="isOpen" class="modal-overlay" @click.self="emit('close')">
+    <div v-if="isOpen" class="modal-overlay" @click.self="$emit('close')">
       <div class="modal-card">
         <div class="modal-header">
-          <div class="modal-icon">⚠️</div>
+          <span v-if="badgeText" :class="['modal-badge', `badge-${badgeVariant || variant}`]">
+            {{ badgeText }}
+          </span>
           <h3 class="modal-title">{{ title }}</h3>
         </div>
+
         <div class="modal-body">
-          <p class="modal-message">{{ message }}</p>
+          <p v-if="message" class="modal-message">{{ message }}</p>
           <slot />
         </div>
+
         <div class="modal-footer">
-          <button class="btn-cancel" @click="emit('close')">{{ cancelText }}</button>
-          <button class="btn-confirm" @click="emit('confirm')">{{ confirmText }}</button>
+          <slot name="footer">
+            <button v-if="showCancel" class="btn-cancel" @click="$emit('close')">
+              {{ cancelText }}
+            </button>
+            <button :class="['btn-confirm', `btn-${variant}`]" @click="$emit('confirm')">
+              {{ confirmText }}
+            </button>
+          </slot>
         </div>
       </div>
     </div>
@@ -51,7 +64,7 @@ const emit = defineEmits(['confirm', 'close']);
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 .modal-header { display: flex; align-items: center; gap: var(--space-3, 12px); margin-bottom: var(--space-3, 12px); }
-.modal-icon { font-size: 1.8rem; line-height: 1; }
+.modal-badge { font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 50px; text-transform: uppercase; background: var(--bg-light, #f7fafc); color: var(--text-muted, #718096); }
 .modal-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main, #1a202c); margin: 0; }
 .modal-body { margin-bottom: var(--space-6, 24px); }
 .modal-message { color: var(--text-muted, #718096); font-size: 0.95rem; line-height: 1.6; margin: 0; }
