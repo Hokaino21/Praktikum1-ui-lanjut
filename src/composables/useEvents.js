@@ -10,6 +10,11 @@ const getApiBaseUrl = () => {
   return envUrl ? envUrl.trim().replace(/\/+$/, '') : '';
 };
 
+const getApiResource = () => {
+  const envResource = import.meta.env.VITE_API_RESOURCE;
+  return envResource ? envResource.trim().replace(/^\/+|\/+$/g, '') : 'events';
+};
+
 // STATE SINGLETON TERPUSAT
 const savedData = localStorage.getItem(EVENTS_STORAGE_KEY);
 const events = ref(savedData ? JSON.parse(savedData) : []);
@@ -51,6 +56,7 @@ export function useEvents() {
     error.value = null;
 
     const baseUrl = getApiBaseUrl();
+    const resource = getApiResource();
 
     // Validasi apakah endpoint MockAPI sudah dikonfigurasi di file .env
     if (!baseUrl || baseUrl.includes('67xxxxxx')) {
@@ -60,7 +66,7 @@ export function useEvents() {
     }
 
     try {
-      const response = await fetch(`${baseUrl}/events`);
+      const response = await fetch(`${baseUrl}/${resource}`);
       if (!response.ok) {
         throw new Error(`Gagal memuat data dari server (Status HTTP: ${response.status} ${response.statusText || ''})`);
       }
@@ -83,6 +89,7 @@ export function useEvents() {
     if (existing) return existing;
 
     const baseUrl = getApiBaseUrl();
+    const resource = getApiResource();
     if (!baseUrl || baseUrl.includes('67xxxxxx')) {
       return null;
     }
@@ -91,7 +98,7 @@ export function useEvents() {
     error.value = null;
 
     try {
-      const response = await fetch(`${baseUrl}/events/${strId}`);
+      const response = await fetch(`${baseUrl}/${resource}/${strId}`);
       if (!response.ok) {
         if (response.status === 404) {
           throw new Error('Acara tidak ditemukan pada sistem server.');
@@ -131,11 +138,12 @@ export function useEvents() {
     };
 
     const baseUrl = getApiBaseUrl();
+    const resource = getApiResource();
 
     try {
       // Jika endpoint sudah aktif, kirim HTTP POST
       if (baseUrl && !baseUrl.includes('67xxxxxx')) {
-        const response = await fetch(`${baseUrl}/events`, {
+        const response = await fetch(`${baseUrl}/${resource}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -171,10 +179,11 @@ export function useEvents() {
     error.value = null;
 
     const baseUrl = getApiBaseUrl();
+    const resource = getApiResource();
 
     try {
       if (baseUrl && !baseUrl.includes('67xxxxxx')) {
-        const response = await fetch(`${baseUrl}/events/${strId}`, {
+        const response = await fetch(`${baseUrl}/${resource}/${strId}`, {
           method: 'DELETE'
         });
 
@@ -204,9 +213,10 @@ export function useEvents() {
       target.done = true;
 
       const baseUrl = getApiBaseUrl();
+      const resource = getApiResource();
       if (baseUrl && !baseUrl.includes('67xxxxxx')) {
         try {
-          await fetch(`${baseUrl}/events/${strId}`, {
+          await fetch(`${baseUrl}/${resource}/${strId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ done: true })
