@@ -12,9 +12,9 @@ const eventId = computed(() => Number(route.params.id));
 
 const activeTicket = computed(() => {
   if (!eventId.value) return null;
-  const eventExists = events.value.some(e => e.id === eventId.value);
+  const eventExists = events.value.some(e => String(e.id) === String(eventId.value));
   if (!eventExists) return null;
-  return userRegistrations.value.find(r => r.eventId === eventId.value);
+  return userRegistrations.value.find(r => String(r.eventId) === String(eventId.value));
 });
 
 const isEventDone = (id) => { const ev = getEventById(id); return ev ? ev.done : false; };
