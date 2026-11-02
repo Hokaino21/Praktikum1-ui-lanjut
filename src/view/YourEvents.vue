@@ -9,7 +9,7 @@ import AppModal from '@/components/ui/AppModal.vue';
 const router = useRouter();
 const { userRegistrations, cancelRegistration, getEventById, events } = useEvents();
 
-const activeRegistrations = computed(() => userRegistrations.value.filter(r => events.value.some(e => e.id === r.eventId)));
+const activeRegistrations = computed(() => userRegistrations.value.filter(r => events.value.some(e => String(e.id) === String(r.eventId))));
 const isEventDone = (eventId) => { const ev = getEventById(eventId); return ev ? ev.done : false; };
 
 const isCancelModalOpen = ref(false);
